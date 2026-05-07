@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eid House Poll 2025 — Live Results</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wh-primary: #1a4a8a;
+    --wh-light: #e8f0fb;
+    --wh-mid: #6a9fd8;
+    --sr-primary: #0d6b4a;
+    --sr-light: #e0f5ec;
+    --sr-mid: #4ec99a;
+    --gold: #c9a84c;
+    --gold-light: #f7f0e0;
+    --ink: #12100e;
+    --ink-soft: #3d3830;
+    --muted: #8a8278;
+    --sand: #faf8f4;
+    --cream: #f4f0e8;
+    --line: #e8e2d6;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--sand);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--ink);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                      radial-gradient(circle at 80% 30%, rgba(26,74,138,0.15) 0%, transparent 50%);
+  }
+  .header-moon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+    position: relative;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.01em;
+    position: relative;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .header-sub {
+    margin-top: 0.5rem;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-top: 1rem;
+    position: relative;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  /* ── Main layout ── */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* ── Status bar ── */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .status-bar strong { color: var(--ink); }
+  .refresh-btn {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 5px 12px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .refresh-btn:hover { background: #fff; color: var(--ink); }
+
+  /* ── Score cards ── */
+  .score-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .score-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .score-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+  .score-card.leading {
+    border-width: 2px;
+  }
+  .score-card.wh.leading { border-color: var(--wh-primary); }
+  .score-card.sr.leading { border-color: var(--sr-primary); }
+  .score-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .score-card.wh::after { background: var(--wh-primary); }
+  .score-card.sr::after { background: var(--sr-primary); }
+
+  .house-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+  .wh .house-badge { background: var(--wh-light); color: var(--wh-primary); }
+  .sr .house-badge { background: var(--sr-light); color: var(--sr-primary); }
+
+  .house-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+  .wh .house-name { color: var(--wh-primary); }
+  .sr .house-name { color: var(--sr-primary); }
+
+  .score-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .wh .score-number { color: var(--wh-primary); }
+  .sr .score-number { color: var(--sr-primary); }
+  .score-denom { font-size: 1rem; color: var(--muted); font-weight: 300; }
+
+  .score-track {
+    height: 6px;
+    background: var(--cream);
+    border-radius: 3px;
+    margin-top: 1rem;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .wh .score-fill { background: var(--wh-primary); }
+  .sr .score-fill { background: var(--sr-primary); }
+
+  .trophy {
+    position: absolute;
+    top: 1.25rem; right: 1.25rem;
+    font-size: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .leading .trophy { opacity: 1; }
+
+  /* ── Winner banner ── */
+  .winner-banner {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+    font-size: 15px;
+    font-weight: 500;
+    display: none;
+    animation: fadeIn 0.6s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .winner-banner.show { display: block; }
+  .winner-banner.wh { background: var(--wh-light); color: var(--wh-primary); border: 1px solid var(--wh-mid); }
+  .winner-banner.sr { background: var(--sr-light); color: var(--sr-primary); border: 1px solid var(--sr-mid); }
+  .winner-banner.tie { background: var(--gold-light); color: var(--ink-soft); border: 1px solid rgba(201,168,76,0.3); }
+
+  /* ── Criteria breakdown ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0;
+  }
+
+  .criteria-block {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .criteria-block-header {
+    padding: 12px 20px;
+    background: var(--cream);
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-icon { font-size: 14px; }
+
+  .crit-row {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+  }
+  .crit-row:last-child { border-bottom: none; }
+  .crit-name {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  .crit-weight {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .crit-bars { display: flex; flex-direction: column; gap: 5px; min-width: 200px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; }
+  .bar-house-label {
+    font-size: 10px;
+    color: var(--muted);
+    width: 28px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .bar-track {
+    flex: 1;
+    height: 5px;
+    background: var(--cream);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 1s ease;
+  }
+  .bar-fill.wh { background: var(--wh-primary); }
+  .bar-fill.sr { background: var(--sr-primary); }
+  .bar-val {
+    font-size: 11px;
+    font-weight: 500;
+    width: 28px;
+    flex-shrink: 0;
+  }
+  .bar-val.wh { color: var(--wh-primary); }
+  .bar-val.sr { color: var(--sr-primary); }
+
+  .winner-pip {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .winner-pip.wh { background: var(--wh-primary); }
+  .winner-pip.sr { background: var(--sr-primary); }
+  .winner-pip.none { background: transparent; }
+
+  /* ── Voters ── */
+  .voters-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .voters-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .voter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .voter-chip {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  /* ── Form CTA ── */
+  .cta-card {
+    background: var(--ink);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 70% 50%, rgba(201,168,76,0.1) 0%, transparent 60%);
+  }
+  .cta-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .cta-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+    position: relative;
+  }
+  .cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── Loading ── */
+  .loading {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 2px solid var(--line);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .score-grid { grid-template-columns: 1fr; }
+    .crit-bars { min-width: 140px; }
+    .score-number { font-size: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-moon">🌙</span>
+  <h1>Eid House Poll <em>2025</em></h1>
+  <p class="header-sub">Live Results — Vote & watch the scores update</p>
+  <div style="display:flex;justify-content:center">
+    <span class="live-badge"><span class="live-dot"></span> Live</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="status-bar">
+    <span>Last updated: <strong id="last-updated">—</strong></span>
+    <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+  </div>
+
+  <div id="main-content">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>Loading live results…</p>
+    </div>
+  </div>
+
+  <div class="cta-card" style="margin-top:2rem">
+    <h3>Haven't voted yet?</h3>
+    <p>Rate both houses across all criteria — takes 2 minutes</p>
+    <a class="cta-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSffmBwKw_oi7mS4s5Xw8sC2nT1YCh2NTeC7NUCroyb6teaLUw/viewform" target="_blank">Open Voting Form →</a>
+  </div>
+
+</div>
+
+<script>
+const SHEET_ID = '1ntXV6sv3CGnlOk43xcAzYlm-pGoZnbo8OxizJwkFl7';
+const FORM_GID  = '486016356';
+
+const SECTIONS = {
+  'Location & Access':    '📍',
+  'Space & Layout':       '🏠',
+  'Outdoor & Recreation': '🌿',
+  'Comfort & Amenities':  '✨',
+  'Practicalities':       '🔑',
+};
+
+const CRITERIA = [
+  ["House location & surroundings",    1.2, "Location & Access"],
+  ["Beach access (distance/quality)",  1.1, "Location & Access"],
+  ["Nearby attractions or shops",      1.0, "Location & Access"],
+  ["Total surface area / common areas",1.0, "Space & Layout"],
+  ["Number of bedrooms",               1.1, "Space & Layout"],
+  ["Number of bathrooms",              0.9, "Space & Layout"],
+  ["Indoor living space quality",      1.0, "Space & Layout"],
+  ["Garden / playground for kids",     1.0, "Outdoor & Recreation"],
+  ["Swimming pool",                    1.2, "Outdoor & Recreation"],
+  ["BBQ & outdoor dining area",        1.0, "Outdoor & Recreation"],
+  ["Outdoor seating & shaded areas",   0.9, "Outdoor & Recreation"],
+  ["Interior design & aesthetics",     1.0, "Comfort & Amenities"],
+  ["Kitchen & cooking facilities",     1.0, "Comfort & Amenities"],
+  ["Parking availability",             0.8, "Comfort & Amenities"],
+  ["WiFi & entertainment",             0.8, "Comfort & Amenities"],
+  ["Privacy",                          1.0, "Practicalities"],
+];
+
+async function loadData() {
+  document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+  // Use out:csv which is simpler to parse and more reliable than JSON
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${FORM_GID}&t=${Date.now()}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) { renderError("Sheet not accessible (HTTP " + res.status + "). Make sure it is published to web."); return; }
+    const text = await res.text();
+    if (!text || text.trim().length === 0) { renderError("Sheet is empty. Submit a vote first then refresh."); return; }
+    // Parse CSV manually — handle quoted fields
+    const rows = text.trim().split("\n").map(line => {
+      const result = [];
+      let cur = "", inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+        if (ch === '"' ) { inQ = !inQ; }
+        else if (ch === "," && !inQ) { result.push(cur.trim()); cur = ""; }
+        else { cur += ch; }
+      }
+      result.push(cur.trim());
+      return result;
+    });
+    if (rows.length < 2) { renderError("No votes yet — submit a vote through the form then refresh!"); return; }
+    renderDashboard(rows);
+  } catch(e) {
+    renderError("Could not load data: " + e.message);
+  }
+}
+
+function computeScores(rows) {
+  // rows[0] = headers, rows[1+] = responses
+  // cols: 0=Timestamp, 1=Name, 2..33=ratings (2 cols per criterion: WH then SR), last=comments
+  const n = CRITERIA.length;
+  const sumsA = new Array(n).fill(0);
+  const sumsB = new Array(n).fill(0);
+  const counts = new Array(n).fill(0);
+  const names = [];
+
+  rows.slice(1).forEach(row => {
+    const name = String(row[1] || '').trim();
+    if (!name) return;
+    names.push(name);
+    CRITERIA.forEach((c, i) => {
+      const colA = 2 + i * 2;
+      const colB = 3 + i * 2;
+      const valA = parseInt(row[colA]);
+      const valB = parseInt(row[colB]);
+      if (!isNaN(valA) && valA > 0) { sumsA[i] += valA; counts[i]++; }
+      if (!isNaN(valB) && valB > 0) sumsB[i] += valB;
+    });
+  });
+
+  const maxPossible = CRITERIA.reduce((s, c) => s + 5 * c[1], 0);
+  let wScoreA = 0, wScoreB = 0;
+  const criteriaData = CRITERIA.map((c, i) => {
+    const cnt = counts[i];
+    const avgWH = cnt > 0 ? sumsA[i] / cnt : null;
+    const avgSR = cnt > 0 ? sumsB[i] / cnt : null;
+    if (cnt > 0) {
+      wScoreA += avgWH * c[1];
+      wScoreB += avgSR * c[1];
+    }
+    let winner = null;
+    if (avgWH !== null) winner = avgWH > avgSR ? 'wh' : avgSR > avgWH ? 'sr' : 'tie';
+    return { section: c[2], crit: c[0], weight: c[1], avgWH, avgSR, winner };
+  });
+
+  const voters = names.length;
+  const normA = voters > 0 ? Math.round((wScoreA / maxPossible) * 100) : null;
+  const normB = voters > 0 ? Math.round((wScoreB / maxPossible) * 100) : null;
+  return { normA, normB, voters, names, criteriaData };
+}
+
+function renderDashboard(rows) {
+  const { normA, normB, voters, names, criteriaData } = computeScores(rows);
+  const hasVotes = voters > 0;
+  const whNum = normA || 0;
+  const srNum = normB || 0;
+
+  let winnerBannerHTML = '';
+  let whLeading = false, srLeading = false;
+  if (hasVotes) {
+    if (whNum > srNum) {
+      whLeading = true;
+      winnerBannerHTML = `<div class="winner-banner wh show">🏆 The White House is currently leading with ${whNum} vs ${srNum} points</div>`;
+    } else if (srNum > whNum) {
+      srLeading = true;
+      winnerBannerHTML = `<div class="winner-banner sr show">🏆 Saraya Resort is currently leading with ${srNum} vs ${whNum} points</div>`;
+    } else {
+      winnerBannerHTML = `<div class="winner-banner tie show">It's a tie! Both houses are equal at ${whNum} points</div>`;
+    }
+  }
+
+  // Group criteria by section
+  const sections = [...new Set(CRITERIA.map(c => c[2]))];
+  const criteriaHTML = sections.map(section => {
+    const icon = SECTIONS[section] || '•';
+    const items = criteriaData.filter(c => c.section === section);
+    if (!items.length) return '';
+
+    const rowsHTML = items.map(item => {
+      const whVal = item.avgWH !== null ? item.avgWH : 0;
+      const srVal = item.avgSR !== null ? item.avgSR : 0;
+      const whPct = (whVal / 5) * 100;
+      const srPct = (srVal / 5) * 100;
+      const whDisplay = item.avgWH !== null ? whVal.toFixed(1) : '–';
+      const srDisplay = item.avgSR !== null ? srVal.toFixed(1) : '–';
+      const winPip = item.winner === 'wh' ? 'wh' : item.winner === 'sr' ? 'sr' : 'none';
+
+      return `
+        <div class="crit-row">
+          <div>
+            <div class="crit-name">${item.crit} <span class="winner-pip ${winPip}" style="display:inline-block;vertical-align:middle;margin-left:4px"></span></div>
+            <div class="crit-weight">Weight ×${item.weight}</div>
+          </div>
+          <div class="crit-bars">
+            <div class="bar-row">
+              <span class="bar-house-label" style="color:var(--wh-primary);font-weight:500">WH</span>
+              <div class="bar-track"><div class="bar-fill wh" style="width:${whPct}%"></div></div>
+              <span class="bar-val wh">${whDisplay}</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-house-label" style="color:var(--sr-primary);font-weight:500">SR</span>
+              <div class="bar-track"><div class="bar-fill sr" style="width:${srPct}%"></div></div>
+              <span class="bar-val sr">${srDisplay}</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="criteria-block">
+        <div class="criteria-block-header"><span class="section-icon">${icon}</span>${section}</div>
+        ${rowsHTML}
+      </div>`;
+  }).join('');
+
+  const voterChips = names.length
+    ? names.map(n => `<span class="voter-chip">${n}</span>`).join('')
+    : '<span style="font-size:13px;color:var(--muted)">No votes yet — be the first!</span>';
+
+  document.getElementById('main-content').innerHTML = `
+    <div class="score-grid">
+      <div class="score-card wh ${whLeading ? 'leading' : ''}">
+        <span class="trophy">🏆</span>
+        <span class="house-badge">White House</span>
+        <div class="house-name">The White<br>House</div>
+        <div class="score-number">${hasVotes ? whNum : '–'}<span class="score-denom">${hasVotes ? '/100' : ''}</span></div>
+        <div class="score-track"><div class="score-fill" style="width:${whNum}%"></div></div>
+      </div>
+      <div class="score-card sr ${srLeading ? 'leading' : ''}">
+        <span class="trophy">🏆</span>
+        <span class="house-badge">Saraya Resort</span>
+        <div class="house-name">Saraya<br>Resort</div>
+        <div class="score-number">${hasVotes ? srNum : '–'}<span class="score-denom">${hasVotes ? '/100' : ''}</span></div>
+        <div class="score-track"><div class="score-fill" style="width:${srNum}%"></div></div>
+      </div>
+    </div>
+
+    ${winnerBannerHTML}
+
+    <div class="voters-card">
+      <div class="voters-title">👥 ${voters} voter${voters !== 1 ? 's' : ''}</div>
+      <div class="voter-chips">${voterChips}</div>
+    </div>
+
+    <div style="margin-bottom:1.25rem">
+      <div class="section-label">Criterion Breakdown</div>
+    </div>
+    ${criteriaHTML}
+  `;
+}
+
+function renderError(msg) {
+  document.getElementById('main-content').innerHTML = `
+    <div style="text-align:center;padding:3rem;color:var(--muted)">
+      <div style="font-size:2rem;margin-bottom:1rem">⚠️</div>
+      <p style="font-size:14px">${msg}</p>
+      <button class="refresh-btn" onclick="loadData()" style="margin-top:1rem">Try again</button>
+    </div>`;
+}
+
+// Auto-refresh every 30 seconds
+loadData();
+setInterval(loadData, 30000);
+</script>
+</body>
+</html>
