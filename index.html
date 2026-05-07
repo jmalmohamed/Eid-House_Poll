@@ -509,7 +509,7 @@ const CRITERIA = [
 async function loadData() {
   document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
   // Use out:csv which is simpler to parse and more reliable than JSON
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${FORM_GID}&t=${Date.now()}`;
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${FORM_GID}&t=${Date.now()}`;
   try {
     const res = await fetch(url);
     if (!res.ok) { renderError("Sheet not accessible (HTTP " + res.status + "). Make sure it is published to web."); return; }
