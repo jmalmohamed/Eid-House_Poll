@@ -509,26 +509,13 @@ const CRITERIA = [
 async function loadData() {
   document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
   // Use out:csv which is simpler to parse and more reliable than JSON
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${FORM_GID}&t=${Date.now()}`;
+  const url = `https://script.google.com/macros/s/AKfycbwvui8hjtMYJDUMerco5remTSl66DY6BRbHWjy4k9URD88Rplhuy2CQs7pXpC8IoGMNlA/exec?t=${Date.now()}`;
   try {
     const res = await fetch(url);
-    if (!res.ok) { renderError("Sheet not accessible (HTTP " + res.status + "). Make sure it is published to web."); return; }
-    const text = await res.text();
-    if (!text || text.trim().length === 0) { renderError("Sheet is empty. Submit a vote first then refresh."); return; }
-    // Parse CSV manually — handle quoted fields
-    const rows = text.trim().split("\n").map(line => {
-      const result = [];
-      let cur = "", inQ = false;
-      for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (ch === '"' ) { inQ = !inQ; }
-        else if (ch === "," && !inQ) { result.push(cur.trim()); cur = ""; }
-        else { cur += ch; }
-      }
-      result.push(cur.trim());
-      return result;
-    });
-    if (rows.length < 2) { renderError("No votes yet — submit a vote through the form then refresh!"); return; }
+    if (!res.ok) { renderError("Could not reach data source (HTTP " + res.status + ")."); return; }
+    const json = await res.json();
+    const rows = json.rows;
+    if (!rows || rows.length < 2) { renderError("No votes yet — submit a vote through the form then refresh!"); return; }
     renderDashboard(rows);
   } catch(e) {
     renderError("Could not load data: " + e.message);
